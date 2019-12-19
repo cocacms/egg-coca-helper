@@ -1,0 +1,19 @@
+{
+  "name": "egg-coca-helper",
+  "version": "1.0.0",
+  "description": "coca helper",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rojer95/egg-coca-helper.git"
+  },
+  "eggPlugin": {
+    "name": "cocaHelper",
+    "dependencies": []
+  },
+  "author": "rojerchen",
+  "dependencies": {
+    "datalize-multi-language": "^1.0.3",
+    "uuid": "^3.3.3"
+  }
+}
