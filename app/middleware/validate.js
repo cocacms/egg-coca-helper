@@ -5,7 +5,7 @@ const datalize = require("datalize-multi-language");
  * @param {*} rule 规则
  * @param {*} option 配置{method, cb, type = form, language}
  */
-function validate(rule = [], option) {
+function validate(rule = [], option = {}) {
   const { method = false, cb = false, type = 'form', language = {}} = option;
   const middlewareFunc = datalize(rule, {
     autoValidate: true,
