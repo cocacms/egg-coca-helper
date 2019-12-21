@@ -1,6 +1,6 @@
-"use strict";
-const datalize = require("datalize-multi-language");
-const getLanguage = require("../../index").getLanguage;
+'use strict';
+const datalize = require('datalize-multi-language');
+const getLanguage = require('../../index').getLanguage;
 
 /**
  * 验证表单
@@ -8,19 +8,24 @@ const getLanguage = require("../../index").getLanguage;
  * @param {*} option 配置{method, cb, type = form, language}
  */
 function validate(rule = [], option = {}) {
-  const { method = false, cb = false, type = "form" } = option;
+  const { method = false, cb = false, type = 'form' } = option;
   let language = getLanguage() || {};
   if (option.language) language = option.language;
   const middlewareFunc = datalize(rule, {
     autoValidate: true,
     type,
-    language
+    language,
   });
 
   return async function(ctx, next) {
+    if (ctx.request.query._jump_validate) {
+      await next();
+      return;
+    }
+
     if (!method || (Array.isArray(method) && method.includes(ctx.method))) {
       await middlewareFunc(ctx, async () => {
-        if (cb && typeof cb === "function") {
+        if (cb && typeof cb === 'function') {
           await cb(ctx, next);
         } else {
           await next();
