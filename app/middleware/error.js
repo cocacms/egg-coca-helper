@@ -7,7 +7,10 @@ module.exports = () => {
     try {
       await next();
     } catch (error) {
-      if (error instanceof createError.HttpError) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        ctx.status = 500;
+        ctx.body = { message: '已存在，请勿重复添加！' };
+      } else if (error instanceof createError.HttpError) {
         ctx.status = error.status;
         ctx.body = { message: error.message };
       } else if (error instanceof datalize.Error) {

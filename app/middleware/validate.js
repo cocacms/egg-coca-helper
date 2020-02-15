@@ -5,17 +5,12 @@ const getLanguage = require('../../index').getLanguage;
 /**
  * 验证表单
  * @param {*} rule 规则
- * @param {*} option 配置{method, cb, type = form, language}
+ * @param {*} option 配置 type [form|params|query] method [POST|GET|DELETE|PUT]
  */
+
 function validate(rule = [], option = {}) {
-  const { method = false, cb = false, type = 'form' } = option;
-  let language = getLanguage() || {};
-  if (option.language) language = option.language;
-  const middlewareFunc = datalize(rule, {
-    autoValidate: true,
-    type,
-    language,
-  });
+  let { method = [], type = 'form' } = option;
+  const language = getLanguage() || {};
 
   return async function(ctx, next) {
     if (ctx.request.query._jump_validate) {
@@ -23,15 +18,21 @@ function validate(rule = [], option = {}) {
       return;
     }
 
-    if (!method || (Array.isArray(method) && method.includes(ctx.method))) {
-      await middlewareFunc(ctx, async () => {
-        if (cb && typeof cb === 'function') {
-          await cb(ctx, next);
-        } else {
-          await next();
-        }
-      });
+    if (ctx.method === 'GET') {
+      type = 'query';
+    }
 
+    const middlewareFunc = datalize(rule, {
+      autoValidate: true,
+      type,
+      language,
+    });
+
+    if (
+      method.length === 0 ||
+      (Array.isArray(method) && method.includes(ctx.method))
+    ) {
+      await middlewareFunc(ctx, next);
       return;
     }
 
