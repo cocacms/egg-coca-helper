@@ -9,10 +9,9 @@ const getLanguage = require('../../index').getLanguage;
  */
 
 function validate(rule = [], option = {}) {
-  let { method = [], type = 'form' } = option;
   const language = getLanguage() || {};
-
   return async function(ctx, next) {
+    let { method = [], type = 'form' } = option;
     if (ctx.request.query._jump_validate) {
       await next();
       return;
