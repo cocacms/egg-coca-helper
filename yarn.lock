@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-datalize-multi-language@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/datalize-multi-language/-/datalize-multi-language-1.0.3.tgz#6a29a05783f6b2c6c9767f404c579a65b30425d5"
-  integrity sha512-++elNNFD+1++cwCzAbbaFzbysrU5sFOSyAK+sO+Xf7Ul7nHB9SPNggYqQO96l5Z8m2zX8ogQAY63aIkmBdKZRA==
+datalize-multi-language@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.npm.taobao.org/datalize-multi-language/download/datalize-multi-language-1.0.8.tgz#a4e7c9330ed037eb03767f154525d654056bb711"
+  integrity sha1-pOfJMw7QN+sDdn8VRSXWVAVrtxE=
   dependencies:
     lodash "^4.17.15"
 

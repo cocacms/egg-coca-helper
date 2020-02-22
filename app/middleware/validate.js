@@ -1,6 +1,5 @@
 'use strict';
 const datalize = require('datalize-multi-language');
-const getLanguage = require('../../index').getLanguage;
 
 /**
  * 验证表单
@@ -9,34 +8,26 @@ const getLanguage = require('../../index').getLanguage;
  */
 
 function validate(rule = [], option = {}) {
-  const language = getLanguage() || {};
-  return async function(ctx, next) {
-    let { method = [], type = 'form' } = option;
-    if (ctx.request.query._jump_validate) {
-      await next();
-      return;
-    }
-
-    if (ctx.method === 'GET') {
-      type = 'query';
-    }
-
-    const middlewareFunc = datalize(rule, {
-      autoValidate: true,
-      type,
-      language,
-    });
-
-    if (
-      method.length === 0 ||
-      (Array.isArray(method) && method.includes(ctx.method))
-    ) {
-      await middlewareFunc(ctx, next);
-      return;
-    }
-
-    await next();
-  };
+  const { method = [] } = option;
+  return datalize(rule, {
+    autoValidate: true,
+    autoType: true,
+    skip: async ctx => {
+      if (ctx.request.query._jump_validate) {
+        return true;
+      }
+      if (
+        method.length === 0 ||
+        (Array.isArray(method) && method.includes(ctx.method))
+      ) {
+        return false;
+      }
+      return true;
+    },
+    language: (ctx, type, args) => {
+      return ctx.__(type, args);
+    },
+  });
 }
 
 module.exports = validate;
